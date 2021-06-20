@@ -1,0 +1,38 @@
+   {% extends "template.html" %} {% block conteudo %}
+   <div class="container-fluid p-3">
+       <div class="spinner-border text-sucess m-1" role="status">
+       </div>
+    <figure class="text-center text-light">
+      <blockquote class="blockquote">
+          <a type="button" href="/update" class="btn btn-success m-2">UPTADE NOW</a>
+          <p class="mt-2" style="font-size:12px">Updated at {{ log }}</p>
+      </blockquote>
+    </figure>
+   </div>
+   <div class="table-responsive flex-fill p-3 border border-success">
+      <table class="table table-sm table-striped table-dark table-bordered p-3" style="font-size:12px">
+        <thead>
+          <tr>
+              {% for column in df_formated.columns %}
+            <th scope="col" class="fs-6 text-center">{{column}}</th>
+              {% endfor %}
+              <th scope="col" class="fs-6 text-center">remove</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for row in df_formated.iterrows() %}
+          <tr>
+              <th scope="row" class="text-center fs-6"><a class="link-success" href="{{ row[1]['username'] }}">{{ row[1]['username'] }}</a></th>
+              <td class="text-center">{{ row[1]['tweets'] }}</td>
+              <td class="text-center">{{ row[1]['nlikes'] }}</td>
+              <td class="text-center">{{ row[1]['nretweets'] }}</td>
+              <td class="text-center">{{ row[1]['nreplies'] }}</td>
+              <td class="text-center">{{ row[1]['first_tweet'] }}</td>
+              <td class="text-center">{{ row[1]['last_tweet'] }}</td>
+              <td class="text-center fs-5"><a class="link-success" href="/remove/{{row[1]['username'] }}"><i class="bi bi-trash"></i></a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+   </div>
+   {% endblock %}

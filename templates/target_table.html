@@ -1,0 +1,35 @@
+   {% extends "template.html" %} {% block conteudo %}
+    <div class="container-fluid bg-dark m2-3">
+        <div class="container-fluid align-self-center">
+            <p class="text-light text-center bg-dark fs-5 p-3"><a class="link-success" href="https://twitter.com/{{ conta_ativa }}"> {{ target }}</a></p>
+        </div>
+        <div class="table-responsive flex-fill p-3 border border-success">
+            <table class="table table-sm table-striped table-dark table-bordered" style="font-size:12px">
+              <thead>
+                <tr>
+                    {% for column in table_columns %}
+                    {% if coluna != 'id' %}
+                  <th scope="col" class="fs-6 text-center">{{column}}</th>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+              {% for row in df.iterrows() %}
+                <tr>
+                    <th scope="row" class="text-center align-middle"><a class="link-success" href="https://twitter.com/{{ target }}/status/{{ row[1]['id'] }}">{{ row[1]['id'] }}</a></th>
+                    <td class="text-center align-middle"> {{ row[1]['date'] }}</td>
+                    <td class="text-center align-middle">{{ row[1]['tweet'] }}</td>
+                    <td class="text-center align-middle">{{ row[1]['nlikes'] }}</td>
+                    <td class="text-center align-middle">{{ row[1]['nretweets'] }}</td>
+                    <td class="text-center align-middle">{{ row[1]['nreplies'] }}</td>
+                    <td class="text-center align-middle">{{ row[1]['hashtags'].replace("[","").replace("]","").replace("'","") }}</td>
+                    <td class="text-center align-middle">{{ row[1]['urls'].replace("[","").replace("]","").replace("'","") }}</td>
+                    <td class="text-center align-middle">{{ row[1]['photos'].replace("[","").replace("]","").replace("'","") }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+   {% endblock %}
