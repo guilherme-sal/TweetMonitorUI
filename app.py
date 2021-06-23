@@ -1,7 +1,8 @@
 from flask import Flask, redirect, render_template, request, url_for, flash
-from uicore.ui_functions import format_alltweets_db_as_general_info_df,json_to_df, format_df_dates, format_date
-from uicore.ui_requests import request_alltweets_as_json, request_target_info, request_post_new_target, \
-    request_targets_list, request_tweets_from_target, request_collect_now, request_delete_target, request_log
+from uicore.ui_functions import json_to_df, format_df_dates, format_date
+from uicore.ui_requests import request_post_new_target, \
+    request_targets_list, request_tweets_from_target, request_collect_now, request_delete_target, request_log, \
+    request_aggregated_db
 
 app = Flask(__name__)
 app.secret_key = 'FFF3B51'
@@ -17,12 +18,11 @@ def index():
     targets_list = request_targets_list()
     targets_list.sort(key=lambda i: i.lower())
 
-    json = request_alltweets_as_json()
+    json = request_aggregated_db()
     df = json_to_df(json)
-    df_formated = format_alltweets_db_as_general_info_df(df)
-    df_formated['first_tweet'] = format_df_dates(df_formated['first_tweet'])
-    df_formated['last_tweet'] = format_df_dates(df_formated['last_tweet'])
-    df_formated = df_formated.sort_values('username', key=lambda col: col.str.lower())
+    df['first_tweet'] = format_df_dates(df['first_tweet'])
+    df['last_tweet'] = format_df_dates(df['last_tweet'])
+    df_formated = df.sort_values('username', key=lambda col: col.str.lower())
 
     return render_template('index.html', targets_list=targets_list, df_formated=df_formated, log=log)
 
@@ -33,12 +33,17 @@ def target(target):
     targets_list = request_targets_list()
 
     json = request_tweets_from_target(target)
-    df = json_to_df(json)
-    df = df[['id', 'date', 'tweet', 'nlikes', 'nretweets', 'nreplies', 'hashtags', 'urls', 'photos']]
-    columns = df.columns
 
-    return render_template('target_table.html', targets_list=targets_list, table_columns=columns, df=df,
-                           target=target)
+    if json:
+        df = json_to_df(json)
+        df = df[['id', 'date', 'tweet', 'nlikes', 'nretweets', 'nreplies', 'hashtags', 'urls', 'photos']]
+        df['date'] = format_df_dates(df['date'])
+        columns = df.columns
+
+        return render_template('target_table.html', targets_list=targets_list, table_columns=columns, df=df,
+                               target=target)
+    else:
+        return(f'Ainda não há tweets para {target}.')
 
 
 @app.route('/add', methods=['POST'])

@@ -1,13 +1,14 @@
 import requests
 
 ### Endpoints ###
-APIURL = 'https://0b1a586fb261.ngrok.io'
+APIURL = 'http://127.0.0.1:5000'
 
 LOG_ENDPOINT = APIURL + '/log'
 
 COLLECTNOW = APIURL + '/collectnow'
 
 ALLTWEETS_ENDPOINT = APIURL + '/tweets'
+AGGREGATEDDB_ENDPOINT = APIURL + '/tweets/aggregate/all'
 
 TARGETS = APIURL + '/targets'
 TARGET_ENDPOINT = APIURL + '/target'
@@ -59,4 +60,10 @@ def request_log():
     r = requests.get(f'{LOG_ENDPOINT}').json()
     log = r['Log']
     return log
+
+
+def request_aggregated_db():
+    r = requests.get(AGGREGATEDDB_ENDPOINT).json()
+    json = r['Dataframe']
+    return json
 
