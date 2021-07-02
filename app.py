@@ -44,7 +44,7 @@ def target(target):
         return render_template('target_table.html', targets_list=targets_list, table_columns=columns, df=df,
                                target=target)
     else:
-        return(f'Ainda não há tweets para {target}.')
+        return f'No tweets for {target}.'
 
 
 @app.route('/add', methods=['POST'])
