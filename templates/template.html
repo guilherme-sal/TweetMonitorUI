@@ -31,6 +31,7 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-success">
         <div class="container-fluid m-2">
           <a class="navbar-brand text-light" href="/">TweetMonitor - DB Admin</a>
+          <center><span class="badge bg-secondary m-1 align-right">{{ user_name }}</span></center>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -47,6 +48,8 @@
                 </ul>
               </li>
             </ul>
+          </div>
+          <div style="width:20%">
             <form class="d-flex" method="POST" action="{{ url_for('add') }}">
               <input class="form-control me-2" type="search" placeholder="Target" aria-label="Search" name="add">
               <button class="btn btn-outline-light" type="submit">Add</button>
