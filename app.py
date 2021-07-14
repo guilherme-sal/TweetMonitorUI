@@ -71,6 +71,7 @@ def target(target):
             df = json_to_df(json)
             df = df[['id', 'date', 'tweet', 'nlikes', 'nretweets', 'nreplies', 'hashtags', 'urls', 'photos', 'thumbnail',
                      'language']]
+            df = df.sort_values('date', ascending=False)
             df['date'] = format_df_dates(df['date'])
             columns = df.columns
 
